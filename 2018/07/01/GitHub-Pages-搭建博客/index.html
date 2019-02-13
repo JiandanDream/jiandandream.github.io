@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="JiandanDream">
 <meta property="og:description" content="简介如果只是搭建简单的个人博客，Github Pages 绝对是值得尝试的方案，它提供了静态网站代码的托管服务。 而 Hexo 或 Jekyll 这类静态博客生成工具，可以生成静态代码。 借助以上工具，作者只需要专注于写作，其他工作由它们完成。 笔者采用了 Hexo，结合 NexT 主题搭建了此博客。 GitHub 配置新建 repository，名称为 username.github.io，这也">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-01T11:34:35.776Z">
+<meta property="og:updated_time" content="2018-07-12T08:17:39.773Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GitHub Pages 搭建博客">
 <meta name="twitter:description" content="简介如果只是搭建简单的个人博客，Github Pages 绝对是值得尝试的方案，它提供了静态网站代码的托管服务。 而 Hexo 或 Jekyll 这类静态博客生成工具，可以生成静态代码。 借助以上工具，作者只需要专注于写作，其他工作由它们完成。 笔者采用了 Hexo，结合 NexT 主题搭建了此博客。 GitHub 配置新建 repository，名称为 username.github.io，这也">
@@ -200,6 +200,26 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -308,12 +328,12 @@
 <p>如果已有静态网站代码，可以 clone repository 后，将代码复制到相应目录下，再 push 到 GitHub 上。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆 repository 来本地</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/&lt;username&gt;/&lt;username&gt;.github.io</span><br></pre></td></tr></table></figure>
 <h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>安装前需要确保已安装 Git 和 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a><br>Mac 自带 Git，直接跳过，笔者使用 Homebrew 安装 Node:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Node</span></span><br><span class="line">brew install node</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 hexo 成功会有以下提示</span></span><br><span class="line">npm install -g hexo-cli</span><br><span class="line"></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/hexo -&gt; /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/bin/hexo</span><br><span class="line"></span><br><span class="line">&gt; fsevents@1.2.4 install /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/node_modules/fsevents</span><br><span class="line">&gt; node install</span><br><span class="line"></span><br><span class="line">[fsevents] Success: <span class="string">"/usr/local/lib/node_modules/hexo-cli/node_modules/fsevents/lib/binding/Release/node-v64-darwin-x64/fse.node"</span> already installed</span><br><span class="line">Pass --update-binary to reinstall or --build-from-source to recompile</span><br><span class="line">+ hexo-cli@1.1.0</span><br><span class="line">added 171 packages from 369 contributors <span class="keyword">in</span> 29.855s</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Node</span></span><br><span class="line">brew install node</span><br><span class="line"><span class="comment"># 安装 hexo</span></span><br><span class="line">npm install -g hexo-cli</span><br><span class="line"><span class="comment"># 成功会有以下提示</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/hexo -&gt; /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/bin/hexo</span><br><span class="line"></span><br><span class="line">&gt; fsevents@1.2.4 install /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/node_modules/fsevents</span><br><span class="line">&gt; node install</span><br><span class="line"></span><br><span class="line">[fsevents] Success: <span class="string">"/usr/local/lib/node_modules/hexo-cli/node_modules/fsevents/lib/binding/Release/node-v64-darwin-x64/fse.node"</span> already installed</span><br><span class="line">Pass --update-binary to reinstall or --build-from-source to recompile</span><br><span class="line">+ hexo-cli@1.1.0</span><br><span class="line">added 171 packages from 369 contributors <span class="keyword">in</span> 29.855s</span><br></pre></td></tr></table></figure>
 <h3 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># folder 为项目目录名</span></span><br><span class="line">hexo init &lt;folder&gt; </span><br><span class="line"><span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <p>调用 <code>hexo server</code> 或 <code>hexo s --debug</code>(调试模式) 后，可以通过 <code>http://localhost:4000/</code> 访问本地博客。</p>
 <h1 id="NexT-主题"><a href="#NexT-主题" class="headerlink" title="NexT 主题"></a>NexT 主题</h1><p>安装前，需要创建 Hexo 项目，然后复制 NexT 到项目目录下：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &lt;hexo site folder&gt;</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
 <p>修改 <code>_config.yml</code> 中的 theme 字段，将其值改为 next。<br>这样，NexT 主题安装完成。接下来验证主题是否正确启用。<br><strong>注意：切换主题后，最好使用 <code>hexo clean</code> 来清除缓存。</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"><span class="comment"># 调试模式启动 Hexo 本地站点，会显示异常信息</span></span><br><span class="line">hexo -s --debug</span><br><span class="line"><span class="comment"># 显示以下信息，即为正常</span></span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"><span class="comment"># 调试模式启动 Hexo 本地站点，会显示异常信息</span></span><br><span class="line">hexo s --debug</span><br><span class="line"><span class="comment"># 显示以下信息，即为正常</span></span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
 <p>NexT 相关配置在 <code>themes/next/_config.yml</code> 中。</p>
 <p>有多种 Scheme，可根据个人喜欢修改：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Schemes</span></span><br><span class="line"><span class="comment"># scheme: Muse</span></span><br><span class="line">scheme: Mist</span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line"><span class="comment">#scheme: Gemini</span></span><br></pre></td></tr></table></figure></p>
 <p>其他详细设置请参考 <a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">开始使用 NexT</a>。</p>
@@ -346,6 +366,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/13/关于-Method-Swizzling-的一点思考/" rel="prev" title="关于_Method_Swizzling_的一点思考">
+                关于_Method_Swizzling_的一点思考 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -419,7 +455,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -476,7 +512,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

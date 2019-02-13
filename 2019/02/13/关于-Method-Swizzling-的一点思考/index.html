@@ -79,14 +79,18 @@
 
 
 
+<meta name="description" content="写在前面经典的实现例子： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546#import &amp;lt;objc/runtime.h&amp;gt;@implementation UIViewController (Tracking)+ (void)load &amp;#123;    static d">
 <meta name="keywords" content="iOS">
-<meta property="og:type" content="website">
-<meta property="og:title" content="JiandanDream">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于_Method_Swizzling_的一点思考">
+<meta property="og:url" content="http://yoursite.com/2019/02/13/关于-Method-Swizzling-的一点思考/index.html">
 <meta property="og:site_name" content="JiandanDream">
+<meta property="og:description" content="写在前面经典的实现例子： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546#import &amp;lt;objc/runtime.h&amp;gt;@implementation UIViewController (Tracking)+ (void)load &amp;#123;    static d">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-13T13:49:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JiandanDream">
+<meta name="twitter:title" content="关于_Method_Swizzling_的一点思考">
+<meta name="twitter:description" content="写在前面经典的实现例子： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546#import &amp;lt;objc/runtime.h&amp;gt;@implementation UIViewController (Tracking)+ (void)load &amp;#123;    static d">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/13/关于-Method-Swizzling-的一点思考/"/>
 
 
 
 
 
-  <title>JiandanDream</title>
+  <title>关于_Method_Swizzling_的一点思考 | JiandanDream</title>
   
 
 
@@ -141,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -235,9 +238,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -267,9 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/13/关于-Method-Swizzling-的一点思考/" itemprop="url">关于_Method_Swizzling_的一点思考</a></h1>
+          <h1 class="post-title" itemprop="name headline">关于_Method_Swizzling_的一点思考</h1>
         
 
         <div class="post-meta">
@@ -319,9 +320,7 @@
       
 
       
-        
-          
-            <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>经典的实现例子：</p>
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>经典的实现例子：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIViewController</span> (<span class="title">Tracking</span>)</span></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)load &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line">    <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">        Class <span class="keyword">class</span> = [<span class="keyword">self</span> <span class="keyword">class</span>];</span><br><span class="line"></span><br><span class="line">        SEL originalSelector = <span class="keyword">@selector</span>(viewWillAppear:);</span><br><span class="line">        SEL swizzledSelector = <span class="keyword">@selector</span>(xxx_viewWillAppear:);</span><br><span class="line"></span><br><span class="line">        Method originalMethod = class_getInstanceMethod(<span class="keyword">class</span>, originalSelector);</span><br><span class="line">        Method swizzledMethod = class_getInstanceMethod(<span class="keyword">class</span>, swizzledSelector);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果交换的是类方法，则使用以下代码:</span></span><br><span class="line">        <span class="comment">// Class class = object_getClass((id)self);</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="comment">// Method originalMethod = class_getClassMethod(class, originalSelector);</span></span><br><span class="line">        <span class="comment">// Method swizzledMethod = class_getClassMethod(class, swizzledSelector);</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">BOOL</span> didAddMethod =</span><br><span class="line">            class_addMethod(<span class="keyword">class</span>,</span><br><span class="line">                originalSelector,</span><br><span class="line">                method_getImplementation(swizzledMethod),</span><br><span class="line">                method_getTypeEncoding(swizzledMethod));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">            class_replaceMethod(<span class="keyword">class</span>,</span><br><span class="line">                swizzledSelector,</span><br><span class="line">                method_getImplementation(originalMethod),</span><br><span class="line">                method_getTypeEncoding(originalMethod));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#pragma mark - Method Swizzling</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)xxx_viewWillAppear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">    [<span class="keyword">self</span> xxx_viewWillAppear:animated];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"viewWillAppear: %@"</span>, <span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <p>关于这个例子，笔者有几点疑问：</p>
 <ol>
@@ -372,8 +371,6 @@
 <p>认真想想，很容易理解，处理了两次，又交换回来了。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://juejin.im/post/5ae96e8c6fb9a07ac85a3860#heading-5" target="_blank" rel="noopener">iOS开发·runtime原理与实践: 消息转发篇(Message Forwarding) (消息机制，方法未实现+API不兼容奔溃，模拟多继承) - 掘金</a><br><a href="https://nshipster.cn/method-swizzling/" target="_blank" rel="noopener">Method Swizzling - NSHipster</a><br><a href="https://developer.apple.com/documentation/objectivec/nsobject/1418815-load" target="_blank" rel="noopener">load() - NSObject | Apple Developer Documentation</a><br><a href="https://developer.apple.com/documentation/objectivec/nsobject/1418639-initialize" target="_blank" rel="noopener">initialize() - NSObject | Apple Developer Documentation</a></p>
 
-          
-        
       
     </div>
     
@@ -390,157 +387,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/01/GitHub-Pages-搭建博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Jiandan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JiandanDream">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/01/GitHub-Pages-搭建博客/" itemprop="url">GitHub Pages 搭建博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T18:29:35+08:00">
-                2018-07-01
-              </time>
+              <a href="/2018/07/01/GitHub-Pages-搭建博客/" rel="next" title="GitHub Pages 搭建博客">
+                <i class="fa fa-chevron-left"></i> GitHub Pages 搭建博客
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>如果只是搭建简单的个人博客，<a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a> 绝对是值得尝试的方案，它提供了静态网站代码的托管服务。</p>
-<p>而 <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 或 <a href="https://jekyllcn.com/" target="_blank" rel="noopener">Jekyll</a> 这类静态博客生成工具，可以生成静态代码。</p>
-<p>借助以上工具，作者只需要专注于写作，其他工作由它们完成。</p>
-<p>笔者采用了 Hexo，结合 NexT 主题搭建了此博客。</p>
-<h1 id="GitHub-配置"><a href="#GitHub-配置" class="headerlink" title="GitHub 配置"></a>GitHub 配置</h1><p>新建 repository，名称为 <code>username</code>.github.io，这也是最终的博客网址，其中 <code>username</code> 必须为 GitHub 上的用户名。</p>
-<p>如果已有静态网站代码，可以 clone repository 后，将代码复制到相应目录下，再 push 到 GitHub 上。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆 repository 来本地</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/&lt;username&gt;/&lt;username&gt;.github.io</span><br></pre></td></tr></table></figure>
-<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>安装前需要确保已安装 Git 和 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a><br>Mac 自带 Git，直接跳过，笔者使用 Homebrew 安装 Node:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 Node</span></span><br><span class="line">brew install node</span><br><span class="line"><span class="comment"># 安装 hexo</span></span><br><span class="line">npm install -g hexo-cli</span><br><span class="line"><span class="comment"># 成功会有以下提示</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/hexo -&gt; /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/bin/hexo</span><br><span class="line"></span><br><span class="line">&gt; fsevents@1.2.4 install /usr/<span class="built_in">local</span>/lib/node_modules/hexo-cli/node_modules/fsevents</span><br><span class="line">&gt; node install</span><br><span class="line"></span><br><span class="line">[fsevents] Success: <span class="string">"/usr/local/lib/node_modules/hexo-cli/node_modules/fsevents/lib/binding/Release/node-v64-darwin-x64/fse.node"</span> already installed</span><br><span class="line">Pass --update-binary to reinstall or --build-from-source to recompile</span><br><span class="line">+ hexo-cli@1.1.0</span><br><span class="line">added 171 packages from 369 contributors <span class="keyword">in</span> 29.855s</span><br></pre></td></tr></table></figure>
-<h3 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># folder 为项目目录名</span></span><br><span class="line">hexo init &lt;folder&gt; </span><br><span class="line"><span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>调用 <code>hexo server</code> 或 <code>hexo s --debug</code>(调试模式) 后，可以通过 <code>http://localhost:4000/</code> 访问本地博客。</p>
-<h1 id="NexT-主题"><a href="#NexT-主题" class="headerlink" title="NexT 主题"></a>NexT 主题</h1><p>安装前，需要创建 Hexo 项目，然后复制 NexT 到项目目录下：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &lt;hexo site folder&gt;</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
-<p>修改 <code>_config.yml</code> 中的 theme 字段，将其值改为 next。<br>这样，NexT 主题安装完成。接下来验证主题是否正确启用。<br><strong>注意：切换主题后，最好使用 <code>hexo clean</code> 来清除缓存。</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"><span class="comment"># 调试模式启动 Hexo 本地站点，会显示异常信息</span></span><br><span class="line">hexo s --debug</span><br><span class="line"><span class="comment"># 显示以下信息，即为正常</span></span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
-<p>NexT 相关配置在 <code>themes/next/_config.yml</code> 中。</p>
-<p>有多种 Scheme，可根据个人喜欢修改：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Schemes</span></span><br><span class="line"><span class="comment"># scheme: Muse</span></span><br><span class="line">scheme: Mist</span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line"><span class="comment">#scheme: Gemini</span></span><br></pre></td></tr></table></figure></p>
-<p>其他详细设置请参考 <a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">开始使用 NexT</a>。</p>
-<h1 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h1><p>通过 <code>hexo new</code> 来新建一篇文章：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &lt;title&gt; <span class="comment"># &lt;title&gt; 不需要后缀名</span></span><br><span class="line"><span class="comment"># 如  hexo new GitHub_Pages_搭建博客</span></span><br></pre></td></tr></table></figure></p>
-<p>可指定文章的布局（layout），默认为 post，通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 参数来指定默认布局。</p>
-<p>详细参考 <a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="noopener">Hexo 写作</a></p>
-<p>写完后，生成静态文件<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure></p>
-<h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>生成的静态文件在 <code>public</code> 目录下，可以复制到任何地方。<br>也可以通过 <a href="https://hexo.io/zh-cn/docs/deployment.html" target="_blank" rel="noopener">配置</a>，自动部署到常见平台。</p>
-<h3 id="自动部署到-GitHub-Pages"><a href="#自动部署到-GitHub-Pages" class="headerlink" title="自动部署到 GitHub Pages"></a>自动部署到 GitHub Pages</h3><p>安装 <code>hexo-deployer-git</code><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
-<p>修改配置<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure></p>
-<p>一键部署<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a><br><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">开始使用 NexT</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -550,10 +418,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -561,6 +430,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -581,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -624,6 +506,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么可以交换？"><span class="nav-number">2.</span> <span class="nav-text">为什么可以交换？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要在-load-方法里处理？"><span class="nav-number">3.</span> <span class="nav-text">为什么要在 load 方法里处理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么不直接使用-method-exchangeImplementations-即可？"><span class="nav-number">4.</span> <span class="nav-text">为什么不直接使用 method_exchangeImplementations 即可？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考题"><span class="nav-number">5.</span> <span class="nav-text">思考题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -757,6 +655,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
